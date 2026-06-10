@@ -1355,9 +1355,9 @@ let sortingGameState = {
   score: 0,
   lives: 3,
   highScore: 0,
-  speed: 1.2, // Pixels per frame at 60fps
+  speed: 2.0, // Initial pixels per frame at 60fps
   currentItem: null,
-  itemY: -150,
+  itemY: -100,
   isPlaying: false,
   inputLocked: false,
   animFrameId: null
@@ -1366,7 +1366,12 @@ let sortingGameState = {
 let lastTime = 0;
 
 function initSortingGame() {
-  sortingGameState.highScore = parseInt(localStorage.getItem("sort_high_score") || "0");
+  try {
+    sortingGameState.highScore = parseInt(localStorage.getItem("sort_high_score") || "0");
+  } catch (e) {
+    console.warn("localStorage'a erişilemedi:", e);
+    sortingGameState.highScore = 0;
+  }
   const hsEl = document.getElementById("sort-high-score-val");
   if (hsEl) hsEl.innerText = sortingGameState.highScore;
 }
@@ -1376,10 +1381,10 @@ function startSortingGame() {
   
   sortingGameState.score = 0;
   sortingGameState.lives = 3;
-  sortingGameState.speed = 1.2; // 1.2 pixels/frame is comfortable for 6th graders
+  sortingGameState.speed = 2.0; // 2.0 is more dynamic and fun for 6th graders
   sortingGameState.isPlaying = true;
   sortingGameState.inputLocked = false;
-  sortingGameState.itemY = -150;
+  sortingGameState.itemY = -100;
   lastTime = 0; // Reset lastTime for delta loop
   
   updateSortingUI();
@@ -1398,7 +1403,7 @@ function startSortingGame() {
 function spawnNextSortingItem() {
   const rand = Math.floor(Math.random() * sortingItems.length);
   sortingGameState.currentItem = sortingItems[rand];
-  sortingGameState.itemY = -150;
+  sortingGameState.itemY = -100;
   sortingGameState.inputLocked = false;
   lastTime = 0; // Reset lastTime for the next item's falling loop
   
@@ -1407,17 +1412,18 @@ function spawnNextSortingItem() {
   const itemEl = document.getElementById("falling-item");
   
   if (iconEl) {
-    if (sortingGameState.currentItem.icon.startsWith("<svg")) {
-      iconEl.innerHTML = sortingGameState.currentItem.icon;
+    const iconStr = sortingGameState.currentItem.icon || "";
+    if (iconStr.trim().startsWith("<svg")) {
+      iconEl.innerHTML = iconStr;
     } else {
-      iconEl.innerText = sortingGameState.currentItem.icon;
+      iconEl.innerText = iconStr;
     }
   }
   if (nameEl) nameEl.innerText = sortingGameState.currentItem.name;
   if (itemEl) {
     itemEl.style.transition = "none"; // Clear previous transition
     itemEl.style.left = "50%";
-    itemEl.style.top = "-150px";
+    itemEl.style.top = "-100px";
     void itemEl.offsetHeight; // FORCE REFLOW: clear queued CSS transitions instantly
   }
 }
@@ -1560,7 +1566,11 @@ function endSortingGame(reason) {
   
   if (sortingGameState.score > sortingGameState.highScore) {
     sortingGameState.highScore = sortingGameState.score;
-    localStorage.setItem("sort_high_score", sortingGameState.highScore);
+    try {
+      localStorage.setItem("sort_high_score", sortingGameState.highScore);
+    } catch (e) {
+      console.warn("localStorage yazma hatası:", e);
+    }
     const hsEl = document.getElementById("sort-high-score-val");
     if (hsEl) hsEl.innerText = sortingGameState.highScore;
   }
