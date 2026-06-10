@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6. Sınıf Elektrik İletimi ve Direnç İnteraktif Portalı</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- Üst Navigasyon Menüsü -->
+  <header>
+    <div class="logo-area" onclick="showDashboard()" style="cursor: pointer;">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">
+        <h1 style="display: flex; align-items: center; gap: 8px;">
+          ElektroLab 6
+          <span class="maarif-badge" style="background: var(--color-purple-light); color: var(--color-purple); border: 2px solid var(--border-color); border-radius: 8px; padding: 2px 6px; font-size: 10px; font-weight: 800; font-family: var(--font-title); box-shadow: 2px 2px 0px var(--border-color); margin-top: -2px;">TYMM UYUMLU</span>
+        </h1>
+        <p>İletkenlik, Direnç ve Makey Makey Dünyası</p>
+      </div>
+    </div>
+    <div class="nav-links">
+      <button class="btn btn-warning" id="btn-sound-toggle" onclick="toggleSound()">
+        <span class="btn-icon">🔊</span> <span id="sound-status-text">Ses Açık</span>
+      </button>
+      <button class="btn" onclick="showDashboard()">
+        <span class="btn-icon">🏠</span> Dashboard
+      </button>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <!-- DASHBOARD GÖRÜNÜMÜ (Ana Sayfa) -->
+    <div id="dashboard-view" class="view-panel" style="display: block;">
+      <div class="dashboard-intro">
+        <h2>⚡ Elektriğin Gizemli Dünyasını Keşfet!</h2>
+        <p>6. Sınıf Fen Bilimleri dersi elektrik ünitesini sürükleyici oyunlar, sanal laboratuvarlar ve fiziksel Makey Makey projeleriyle öğren.</p>
+      </div>
+      
+      <div class="dashboard-grid">
+        <!-- İletken/Yalıtkan Kartı -->
+        <div class="card card-iletken" onclick="navigateTo('iletken-lab')">
+          <div>
+            <div class="card-icon">🧪</div>
+            <h3 class="card-title">İletken mi, Yalıtkan mı?</h3>
+            <p class="card-description">Maddeleri elektrik devresine sürükle-bırak yöntemiyle bağla, ampulü yakıp hangisinin elektriği ilettiğini gözlemle!</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-badge">Laboratuvar</span>
+            <span>Başla →</span>
+          </div>
+        </div>
+
+        <!-- Sanal Makey Makey Kartı -->
+        <div class="card card-makey" onclick="navigateTo('makey-lab')">
+          <div>
+            <div class="card-icon">🎹</div>
+            <h3 class="card-title">Sanal Makey Makey</h3>
+            <p class="card-description">Muzlar, elmalar ve kurşun kalem çizimleriyle çalışan sanal Makey Makey devresini kur ve kendi piyanonu çal!</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-badge">Etkileşimli Simülasyon</span>
+            <span>Çal →</span>
+          </div>
+        </div>
+
+        <!-- Direnç Lab Kartı -->
+        <div class="card card-direnc" onclick="navigateTo('direnc-lab')">
+          <div>
+            <div class="card-icon">🔬</div>
+            <h3 class="card-title">Elektriksel Direnç Lab</h3>
+            <p class="card-description">İletken telin uzunluğunu, kalınlığını ve cinsini değiştir. Elektronların mikroskobik dünyasını ve ampul parlaklığını gör!</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-badge">Mikro Simülasyon</span>
+            <span>Keşfet →</span>
+          </div>
+        </div>
+
+        <!-- Reosta Kumanda Kartı -->
+        <div class="card card-direnc" onclick="navigateTo('reosta-lab')" style="border-color: var(--color-warning);">
+          <div>
+            <div class="card-icon">🎛️</div>
+            <h3 class="card-title">Reosta (Değişken Direnç)</h3>
+            <p class="card-description">Reosta sürgüsünü kontrol et! Radyo sesini ayarlayarak ve ütünün sıcaklığını değiştirerek reostanın günlük kullanımını test et.</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-badge">Kumanda Paneli</span>
+            <span>Ayarla →</span>
+          </div>
+        </div>
+
+        <!-- Resist-O-Lab Kartı -->
+        <div class="card card-resist" onclick="navigateTo('resist-o-lab')">
+          <div>
+            <div class="card-icon">🔌</div>
+            <h3 class="card-title">Resist-O-Lab: Tel Atölyesi</h3>
+            <p class="card-description">Malzemeleri birleştir, kendi iletken telini tasarla! Ekmek kızartıcı, fırlatma rampası ve elektrik sigortası görevlerini tamamla.</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-badge">Eğitsel Simülasyon</span>
+            <span>Tasarla →</span>
+          </div>
+        </div>
+
+        <!-- Makey Makey Projeleri Kartı -->
+        <div class="card card-gorev" onclick="navigateTo('makey-projects')">
+          <div>
+            <div class="card-icon">🛠️</div>
+            <h3 class="card-title">Fiziksel Performans Görevleri</h3>
+            <p class="card-description">Bilişim Teknolojileri işbirliğiyle Makey Makey kullanarak kendi meyve piyanonu, labirent kontrolcünü veya su davulunu tasarla!</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-badge">BT İşbirliği</span>
+            <span>Projeleri Gör →</span>
+          </div>
+        </div>
+
+        <!-- Tasnif Oyunu Kartı -->
+        <div class="card card-iletken" onclick="navigateTo('sorting-game')" style="border-color: var(--color-purple);">
+          <div>
+            <div class="card-icon">🎮</div>
+            <h3 class="card-title">İletken/Yalıtkan Hızlı Tasnif</h3>
+            <p class="card-description">Yukarıdan düşen maddeleri hızla iletken ve yalıtkan sepetlerine gönder. Hata yapmadan en yüksek skora ulaş!</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-badge">Arcade Oyun</span>
+            <span>Oyna →</span>
+          </div>
+        </div>
+
+        <!-- Çalışma Kağıdı Kartı -->
+        <div class="card card-calisma" onclick="navigateTo('calisma-kagidi')">
+          <div>
+            <div class="card-icon">📝</div>
+            <h3 class="card-title">İnteraktif Çalışma Kağıdı</h3>
+            <p class="card-description">Öğrendiklerini pekiştirecek testleri çöz, anında puanını al. Öğretmenler için tek tıkla yazdırılabilir A4 şablonlu sürüm.</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-badge">Değerlendirme</span>
+            <span>Çöz / Yazdır →</span>
+          </div>
+        </div>
+
+        <!-- 5E Ders Planı Kartı -->
+        <div class="card card-dersplani" onclick="navigateTo('ders-plani')">
+          <div>
+            <div class="card-icon">🏫</div>
+            <h3 class="card-title">Öğretmen 5E Ders Planı</h3>
+            <p class="card-description">Öğretmenler için Makey Makey entegrasyonu, kazanımlar, süreler ve değerlendirme yönergeleri içeren 5E formatında ders kılavuzu.</p>
+          </div>
+          <div class="card-footer">
+            <span class="card-badge">Öğretmen Kılavuzu</span>
+            <span>Planı İncele →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 1. İLETKEN VE YALITKAN LAB GÖRÜNÜMÜ -->
+    <div id="iletken-lab" class="view-container">
+      <div class="view-header">
+        <div class="view-title-area">
+          <h2 id="iletken-heading" tabindex="-1">🧪 İletken ve Yalıtkan Maddeler Test Laboratuvarı</h2>
+          <p>Maddeleri test devresindeki kesikli çizgili boşluğa sürükle ve ampulün yanıp yanmadığını gözlemle!</p>
+        </div>
+        <button class="btn btn-danger" onclick="showDashboard()">Kapat ✕</button>
+      </div>
+
+      <div class="lab-layout">
+        <div class="circuit-area">
+          <div class="circuit-board" id="drop-zone-circuit">
+            <!-- Pil -->
+            <div class="circuit-element battery">
+              <span>🔋 3V Pil Yatağı</span>
+            </div>
+            <!-- Ampul -->
+            <div class="circuit-element bulb-element" id="lab-bulb">
+              <span style="font-size: 40px; line-height: 1;" id="lab-bulb-icon">💡</span>
+              <span>Duy & Ampul</span>
+            </div>
+            <!-- Anahtar -->
+            <div class="circuit-element switch-element">
+              <span>🔌 Bağlantı Ucu</span>
+            </div>
+            
+            <!-- Bağlantı Kabloları Çizim Alanı (SVG olarak arkada çalışır) -->
+            <svg class="circuit-canvas" id="circuit-svg" viewBox="0 0 600 400" width="100%" height="100%">
+              <!-- Sol alt kablo: Pil (alt) -> Anahtar (sol) -->
+              <path d="M 230 325 L 100 325 L 100 238" fill="none" stroke="#1e2229" stroke-width="5" />
+              <!-- Sol üst kablo: Anahtar (sol) -> Ampul (üst) -->
+              <path d="M 100 162 L 100 90 L 235 90" fill="none" stroke="#1e2229" stroke-width="5" />
+              <!-- Sağ üst kablo: Ampul (üst) -> Test Boşluğu (sağ) -->
+              <path d="M 365 90 L 490 90 L 490 160" fill="none" stroke="#1e2229" stroke-width="5" />
+              <!-- Sağ alt kablo (kesikli çizgi - test bölgesi): Test Boşluğu (sağ) -> Pil (alt) -->
+              <path d="M 490 240 L 490 325 L 370 325" fill="none" stroke="#1e2229" stroke-width="5" stroke-dasharray="8,8" />
+            </svg>
+            
+            <!-- Test Boşluğu (Sürükleme Hedefi) -->
+            <div class="test-gap" id="drop-target">
+              Maddeleri Buraya Sürükle
+            </div>
+          </div>
+          
+          <div class="lab-feedback" id="lab-feedback-panel" style="border-color: var(--border-color);">
+            💡 <strong>Nasıl Oynanır?</strong> Sağ paneldeki katı ve sıvı maddeleri devredeki test alanına sürükle-bırak yap.
+          </div>
+        </div>
+
+        <div class="materials-panel">
+          <h3>Katı Maddeler</h3>
+          <div class="materials-grid" id="solid-materials">
+            <div class="material-item" draggable="true" id="mat-bakir" data-conductive="true" data-type="katı" data-name="Bakır Kaşık">
+              <span>🥄</span> Bakır Kaşık
+            </div>
+            <div class="material-item" draggable="true" id="mat-vida" data-conductive="true" data-type="katı" data-name="Demir Vida">
+              <span>🔩</span> Demir Vida
+            </div>
+            <div class="material-item" draggable="true" id="mat-tahta" data-conductive="false" data-type="katı" data-name="Tahta Çubuk">
+              <span>🪵</span> Tahta Çubuk
+            </div>
+            <div class="material-item" draggable="true" id="mat-plastik" data-conductive="false" data-type="katı" data-name="Plastik Cetvel">
+              <span>📏</span> Plastik Cetvel
+            </div>
+            <div class="material-item" draggable="true" id="mat-kursun" data-conductive="true" data-type="katı" data-name="Grafit Kalem Ucu">
+              <span>✏️</span> Kalem Ucu
+            </div>
+            <div class="material-item" draggable="true" id="mat-silgi" data-conductive="false" data-type="katı" data-name="Silgi">
+              <span>🧽</span> Yumuşak Silgi
+            </div>
+          </div>
+
+          <h3 style="margin-top: 20px;">Sıvı Maddeler</h3>
+          <div class="materials-grid" id="liquid-materials">
+            <div class="material-item" draggable="true" id="mat-tuzlu" data-conductive="true" data-type="sıvı" data-name="Tuzlu Su">
+              <span>🥛</span> Tuzlu Su
+            </div>
+            <div class="material-item" draggable="true" id="mat-sekerli" data-conductive="false" data-type="sıvı" data-name="Şekerli Su">
+              <span>🥛</span> Şekerli Su
+            </div>
+            <div class="material-item" draggable="true" id="mat-sirke" data-conductive="true" data-type="sıvı" data-name="Sirke">
+              <span>🍶</span> Sirke
+            </div>
+            <div class="material-item" draggable="true" id="mat-limon" data-conductive="true" data-type="sıvı" data-name="Limonlu Su">
+              <span>🍋</span> Limonlu Su
+            </div>
+          </div>
+          
+          <button class="btn btn-warning" onclick="resetLab1()" style="width: 100%; margin-top: 20px;">Laboratuvarı Sıfırla</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 2. SANAL MAKEY MAKEY LAB GÖRÜNÜMÜ -->
+    <div id="makey-lab" class="view-container">
+      <div class="view-header">
+        <div class="view-title-area">
+          <h2 id="makey-heading" tabindex="-1">🎹 Sanal Makey Makey Meyve Piyanosu</h2>
+          <p>Klavye tuşlarına (Aşağı, Yukarı, Sol, Sağ Ok, Space) basarak veya nesnelere tıklayarak devreyi tamamlayıp piyano notalarını çal!</p>
+        </div>
+        <button class="btn btn-danger" onclick="showDashboard()">Kapat ✕</button>
+      </div>
+
+      <div class="makey-layout">
+        <div class="makey-interactive-area">
+          <!-- Makey Makey Board (Stilize SVG) -->
+          <svg class="makey-board-svg" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ana Kart Tabanı (Kırmızı Neobrutalist) -->
+            <rect x="10" y="10" width="380" height="230" rx="15" fill="#ef4444" stroke="#1e2229" stroke-width="6" />
+            <rect x="20" y="20" width="360" height="210" rx="10" fill="#dc2626" />
+            
+            <!-- Logo ve Yazılar -->
+            <text x="200" y="45" font-family="'Fredoka', sans-serif" font-size="20" font-weight="700" fill="#fff" text-anchor="middle">Makey Makey Simülatörü</text>
+            <text x="200" y="215" font-family="sans-serif" font-size="10" fill="#fecaca" text-anchor="middle">İletken Gövdeye Dokun + Klavye Tuşlarını Tetikle</text>
+            
+            <!-- Ok Tuşları Bağlantıları -->
+            <!-- YUKARI -->
+            <polygon class="makey-key" id="mk-ArrowUp" points="200,70 185,100 215,100" fill="#e2e8f0" stroke="#1e2229" stroke-width="3" />
+            <!-- SOL -->
+            <polygon class="makey-key" id="mk-ArrowLeft" points="145,120 175,105 175,135" fill="#e2e8f0" stroke="#1e2229" stroke-width="3" />
+            <!-- SAĞ -->
+            <polygon class="makey-key" id="mk-ArrowRight" points="255,120 225,105 225,135" fill="#e2e8f0" stroke="#1e2229" stroke-width="3" />
+            <!-- AŞAĞI -->
+            <polygon class="makey-key" id="mk-ArrowDown" points="200,170 185,140 215,140" fill="#e2e8f0" stroke="#1e2229" stroke-width="3" />
+            
+            <!-- Space ve Click Bağlantıları -->
+            <!-- SPACE (Boşluk Tuşu) -->
+            <rect class="makey-key" id="mk-Space" x="60" y="105" width="30" height="30" rx="5" fill="#e2e8f0" stroke="#1e2229" stroke-width="3" />
+            <text x="75" y="123" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">BOŞ</text>
+            
+            <!-- CLICK (Tıklama Tuşu) -->
+            <rect class="makey-key" id="mk-Click" x="310" y="105" width="30" height="30" rx="5" fill="#e2e8f0" stroke="#1e2229" stroke-width="3" />
+            <text x="325" y="123" font-size="10" font-weight="bold" fill="#475569" text-anchor="middle">TIK</text>
+            
+            <!-- Earth (Toprak - GND) Bağlantı Barı -->
+            <rect class="makey-key" id="mk-Earth" x="60" y="180" width="280" height="15" rx="4" fill="#fbbf24" stroke="#1e2229" stroke-width="3" />
+            <text x="200" y="191" font-size="10" font-weight="bold" fill="#1e2229" text-anchor="middle">TOPRAK (EARTH - GND)</text>
+          </svg>
+
+          <!-- Görsel Piyano Tuşları (Arayüzden Kontrol Etmek İçin) -->
+          <div class="makey-piano-keys">
+            <button class="piano-key-button" id="pk-ArrowLeft" onclick="playMakeyNote('ArrowLeft')">
+              <span class="piano-label">SOL OK</span>
+              <span class="piano-note">Do</span>
+            </button>
+            <button class="piano-key-button" id="pk-ArrowUp" onclick="playMakeyNote('ArrowUp')">
+              <span class="piano-label">YUKARI OK</span>
+              <span class="piano-note">Re</span>
+            </button>
+            <button class="piano-key-button" id="pk-ArrowRight" onclick="playMakeyNote('ArrowRight')">
+              <span class="piano-label">SAĞ OK</span>
+              <span class="piano-note">Mi</span>
+            </button>
+            <button class="piano-key-button" id="pk-ArrowDown" onclick="playMakeyNote('ArrowDown')">
+              <span class="piano-label">AŞAĞI OK</span>
+              <span class="piano-note">Fa</span>
+            </button>
+            <button class="piano-key-button" id="pk-Space" onclick="playMakeyNote('Space')">
+              <span class="piano-label">BOŞLUK</span>
+              <span class="piano-note">Sol</span>
+            </button>
+            <button class="piano-key-button" id="pk-Click" onclick="playMakeyNote('Click')">
+              <span class="piano-label">TIKLAMA</span>
+              <span class="piano-note">La</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="materials-panel">
+          <h3>Fiziksel Eşleşme</h3>
+          <div class="info-note" style="margin-top: 0;">
+            Real Makey Makey devresinde bir elinizle <strong>Toprak (Earth)</strong> hattına dokunurken diğer elinizle meyveye dokunursanız devreyi tamamlarsınız ve elektrik vücudunuz üzerinden akıp ses tetikler!
+          </div>
+          
+          <div class="materials-grid">
+            <div class="material-item" style="cursor: default; background: var(--color-warning-light);">
+              <span>🍌</span> <strong>Muz (Do)</strong>
+              <p style="font-size:10px;">Sol Ok</p>
+            </div>
+            <div class="material-item" style="cursor: default; background: var(--color-danger-light);">
+              <span>🍎</span> <strong>Elma (Re)</strong>
+              <p style="font-size:10px;">Yukarı Ok</p>
+            </div>
+            <div class="material-item" style="cursor: default; background: var(--color-primary-light);">
+              <span>🥄</span> <strong>Kaşık (Mi)</strong>
+              <p style="font-size:10px;">Sağ Ok</p>
+            </div>
+            <div class="material-item" style="cursor: default; background: var(--color-success-light);">
+              <span>✏️</span> <strong>Grafit (Fa)</strong>
+              <p style="font-size:10px;">Aşağı Ok</p>
+            </div>
+            <div class="material-item" style="cursor: default; background: var(--color-purple-light);">
+              <span>🍊</span> <strong>Portakal (Sol)</strong>
+              <p style="font-size:10px;">Boşluk</p>
+            </div>
+            <div class="material-item" style="cursor: default; background: var(--color-teal-light);">
+              <span>💧</span> <strong>Tuzlu Su (La)</strong>
+              <p style="font-size:10px;">Tıklama</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 3. ELEKTRİKSEL DİRENÇ LAB GÖRÜNÜMÜ -->
+    <div id="direnc-lab" class="view-container">
+      <div class="view-header">
+        <div class="view-title-area">
+          <h2 id="direnc-heading" tabindex="-1">🔬 Elektriksel Direnç ve Bağlı Olduğu Faktörler</h2>
+          <p>Telin uzunluğunu, kalınlığını ve cinsini değiştirerek devredeki ampulün parlaklığını ve mikroskobik atom-elektron çarpışmalarını incele!</p>
+        </div>
+        <button class="btn btn-danger" onclick="showDashboard()">Kapat ✕</button>
+      </div>
+
+      <div class="resistance-controls">
+        <!-- Tel Cinsi -->
+        <div class="control-group">
+          <h4>🔘 Telin Cinsi (Öz direnç)</h4>
+          <div class="type-buttons">
+            <button class="type-btn active" id="wire-bakir" onclick="setWireType('bakir')">Gümüş / Bakır</button>
+            <button class="type-btn" id="wire-demir" onclick="setWireType('demir')">Demir</button>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); margin-top: 10px;" id="type-explanation">
+            Bakırın elektriksel direnci düşüktür, akım rahat geçer.
+          </p>
+        </div>
+
+        <!-- Tel Uzunluğu -->
+        <div class="control-group">
+          <h4>📏 Telin Uzunluğu (L): <span id="val-length">10</span> cm</h4>
+          <input type="range" class="control-slider" id="slider-length" min="5" max="30" value="10" oninput="updateResistanceSimulation()">
+          <p style="font-size: 11px; color: var(--text-muted);">
+            Tel uzadıkça direnç artar (Elektronların yolu uzar).
+          </p>
+        </div>
+
+        <!-- Tel Kalınlığı -->
+        <div class="control-group">
+          <h4>📐 Dik Kesit Alanı (S): <span id="val-thickness">2</span> mm²</h4>
+          <input type="range" class="control-slider" id="slider-thickness" min="1" max="5" value="2" oninput="updateResistanceSimulation()">
+          <p style="font-size: 11px; color: var(--text-muted);">
+            Tel kalınlaştıkça direnç azalır (Elektronlar kolay geçer).
+          </p>
+        </div>
+      </div>
+
+      <!-- Mikroskobik Görünüm -->
+      <h3 style="margin-bottom: 10px;">🔍 Telin İçindeki Atom ve Elektronların Hareketi (Mikroskobik)</h3>
+      <div class="wire-micro-view" id="micro-view-box">
+        <!-- Canvas veya dinamik DOM ile atom/elektronlar buraya çizilecek -->
+      </div>
+
+      <div class="lab-layout" style="grid-template-columns: 1fr 1fr; margin-top: 20px;">
+        <div class="bulb-glow-container" style="background: #f8fafc; border: 3px solid var(--border-color); border-radius: 16px; padding: 20px; box-shadow: 4px 4px 0 var(--border-color);">
+          <h3 style="margin-bottom: 15px;">💡 Ampul Parlaklığı</h3>
+          <div style="font-size: 80px; transition: text-shadow 0.2s;" id="simulation-bulb">💡</div>
+          <p id="glow-percent" style="font-weight: 700; font-family: var(--font-title); margin-top: 10px;">Parlaklık: %100</p>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px;">
+          <h3>Hesaplanan Elektriksel Direnç</h3>
+          <div class="resistance-value-display" id="total-resistance-val">
+            0.50 Ω (Ohm)
+          </div>
+          <div class="info-note" style="margin: 0; width: 100%;">
+            <strong>Özet Formül:</strong> Direnç, uzunlukla doğru orantılı, kesit alanıyla (kalınlıkla) ters orantılıdır.
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 4. REOSTA LAB GÖRÜNÜMÜ -->
+    <div id="reosta-lab" class="view-container">
+      <div class="view-header">
+        <div class="view-title-area">
+          <h2 id="reosta-heading" tabindex="-1">🎛️ Reosta (Değişken Direnç) Simülatörü</h2>
+          <p>Reosta sürgüsünü hareket ettirerek direnç değerini değiştir, ampul parlaklığını veya radyo ses seviyesini ayarla!</p>
+        </div>
+        <button class="btn btn-danger" onclick="showDashboard()">Kapat ✕</button>
+      </div>
+
+      <div class="reosta-container">
+        <!-- Reosta Görsel Slider -->
+        <div class="reosta-slider-wrapper">
+          <div class="reosta-direction-labels">
+            <span>◀ 1 Yönü (Direnç Artar)</span>
+            <span>2 Yönü (Direnç Azalır) ▶</span>
+          </div>
+          <input type="range" class="reosta-slider-input" id="reosta-slider" min="1" max="100" value="50" oninput="updateReosta()">
+          <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-top: 5px;">
+            <span>Yüksek Direnç / Düşük Akım</span>
+            <span>Düşük Direnç / Yüksek Akım</span>
+          </div>
+        </div>
+
+        <div class="lab-layout" style="grid-template-columns: 1fr 1fr; width: 100%;">
+          <!-- Ampul Uygulaması -->
+          <div style="background: #f8fafc; border: 3px solid var(--border-color); border-radius: 16px; padding: 25px; display: flex; flex-direction: column; align-items: center; box-shadow: 4px 4px 0 var(--border-color);">
+            <h3 style="margin-bottom: 15px;">💡 Basit Devre Parlaklığı</h3>
+            <div id="reosta-bulb" style="font-size: 80px; filter: drop-shadow(0 0 10px rgba(253, 224, 71, 0.5)); transition: transform 0.1s;">💡</div>
+            <p id="reosta-bulb-text" style="font-family: var(--font-title); font-weight: 700; margin-top: 15px;">Parlaklık: %50</p>
+          </div>
+
+          <!-- Radyo Ses Seviyesi Uygulaması -->
+          <div style="background: #f8fafc; border: 3px solid var(--border-color); border-radius: 16px; padding: 25px; display: flex; flex-direction: column; align-items: center; box-shadow: 4px 4px 0 var(--border-color);">
+            <h3 style="margin-bottom: 15px;">📻 Eski Radyo Ses Ayarı</h3>
+            <div class="reosta-radio-demo">
+              <div class="radio-speaker" id="radio-speaker-container">
+                <div class="radio-speaker-inner"></div>
+                <div class="sound-waves" id="sound-wave-1"></div>
+                <div class="sound-waves" id="sound-wave-2" style="animation-delay: 0.5s;"></div>
+              </div>
+              <p id="radio-vol-text" style="font-family: var(--font-title); font-weight: 700;">Ses Düzeyi: %50</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 5. KENDİ TELİNİ TASARLA (RESIST-O-LAB) -->
+    <div id="resist-o-lab" class="view-container">
+      <div class="view-header">
+        <div class="view-title-area">
+          <h2 id="resist-heading" tabindex="-1">🔌 Kendi Telini Tasarla: Resist-O-Lab</h2>
+          <p>Farklı atomları/malzemeleri birleştirerek devreler tasarlayın ve laboratuvardaki görevleri tamamlayın!</p>
+        </div>
+        <button class="btn btn-danger" onclick="showDashboard()">Kapat ✕</button>
+      </div>
+
+      <div class="resist-layout">
+        <!-- Sol Kenar Çubuğu: Görevler -->
+        <div class="resist-sidebar">
+          <h3>Görev Seçimi</h3>
+          
+          <!-- Görev 1 -->
+          <div class="challenge-card active" id="chall-toaster" onclick="selectResistChallenge('toaster')">
+            <div class="challenge-title">🍞 Ekmek Kızartıcı</div>
+            <div class="challenge-desc">Telin yüksek direnç gösterip ısınması gerek. Sıcaklığı 150°C ile 250°C arasına getirerek ekmeği kızartın!</div>
+            <div class="target-badge">Hedef: 150°C - 250°C</div>
+          </div>
+
+          <!-- Görev 2 -->
+          <div class="challenge-card" id="chall-rocket" onclick="selectResistChallenge('rocket')">
+            <div class="challenge-title">🚀 Fırlatma Rampası</div>
+            <div class="challenge-desc">Maksimum akım ile roket motorlarını ateşleyin! Direnci 3Ω veya altına düşürüp roketi uzaya fırlatın!</div>
+            <div class="target-badge">Hedef: Direnç ≤ 3Ω</div>
+          </div>
+
+          <!-- Görev 3 -->
+          <div class="challenge-card" id="chall-fuse" onclick="selectResistChallenge('fuse')">
+            <div class="challenge-title">🛡️ Güvenli Ev Sigortası</div>
+            <div class="challenge-desc">Normal voltajda (50V) akımı geçiren (I &lt; 10A) ama voltaj 120V'a fırladığında eriyen (I &gt; 10A) bir sigorta tasarlayın!</div>
+            <div class="target-badge">Hedef: Normal Akım &lt; 10A &amp; Aşırı Akım &gt; 10A</div>
+          </div>
+        </div>
+
+        <!-- Ana Lab Alanı -->
+        <div class="resist-game-area">
+          <!-- Devre Başlığı ve Bilgilendirme -->
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:700; font-family:var(--font-title); font-size:18px;" id="resist-task-title">Görev: Ekmek Kızartıcı</div>
+            <div id="resist-feedback" style="color:var(--color-warning); font-weight:800; font-size:14px; text-shadow:0 0 10px rgba(0,0,0,0.5);">Tasarımınızı test etmek için "DEVREYİ ÇALIŞTIR" butonuna basın.</div>
+          </div>
+
+          <!-- Tasarım Tel Alanı (5 Slot) -->
+          <div class="wire-constructor">
+            <div class="wire-line-back"></div>
+            <div class="wire-line-glow" id="resist-wire-glow"></div>
+            
+            <!-- Electron Flow Dot Container -->
+            <div id="electron-flow-container" style="position:absolute; inset:0; pointer-events:none;"></div>
+            
+            <!-- Slot 1 -->
+            <div class="wire-slot-card bakir" id="wslot-0" onclick="cycleSlotMaterial(0)">
+              <div class="wire-slot-icon">⚡</div>
+              <div class="wire-slot-label">Bakır</div>
+            </div>
+            <!-- Slot 2 -->
+            <div class="wire-slot-card bakir" id="wslot-1" onclick="cycleSlotMaterial(1)">
+              <div class="wire-slot-icon">⚡</div>
+              <div class="wire-slot-label">Bakır</div>
+            </div>
+            <!-- Slot 3 -->
+            <div class="wire-slot-card bakir" id="wslot-2" onclick="cycleSlotMaterial(2)">
+              <div class="wire-slot-icon">⚡</div>
+              <div class="wire-slot-label">Bakır</div>
+            </div>
+            <!-- Slot 4 -->
+            <div class="wire-slot-card bakir" id="wslot-3" onclick="cycleSlotMaterial(3)">
+              <div class="wire-slot-icon">⚡</div>
+              <div class="wire-slot-label">Bakır</div>
+            </div>
+            <!-- Slot 5 -->
+            <div class="wire-slot-card bakir" id="wslot-4" onclick="cycleSlotMaterial(4)">
+              <div class="wire-slot-icon">⚡</div>
+              <div class="wire-slot-label">Bakır</div>
+            </div>
+          </div>
+          
+          <div style="text-align:center; font-size:12px; color:#94a3b8; font-weight:700;">
+            💡 Kartların üzerine tıklayarak sırayla malzemeyi değiştirin: <span style="color:#f97316;">Bakır (⚡)</span> → <span style="color:#facc15;">Altın (👑)</span> → <span style="color:#94a3b8;">Demir (🔩)</span> → <span style="color:#a16207;">Tahta (🪵)</span>
+          </div>
+
+          <!-- Lab Alt Göstergeleri ve Çıktı Görselleri -->
+          <div class="lab-panel-bottom">
+            <!-- Göstergeler -->
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <!-- Voltaj Kontrolü (Sadece Sigorta Görevinde Gösterilir) -->
+              <div id="fuse-voltage-control" style="display:none; background:rgba(255,255,255,0.05); padding:10px 15px; border-radius:12px; border:2px solid rgba(255,255,255,0.1);">
+                <label style="font-size:12px; font-weight:800; display:flex; justify-content:space-between;">
+                  <span>ŞEBEKE GERİLİMİ (VOLTAJ)</span>
+                  <span id="fuse-volts-val" style="color:var(--color-warning);">50 Volt</span>
+                </label>
+                <input type="range" id="fuse-voltage-slider" min="50" max="120" value="50" step="10" oninput="updateFuseVoltage()" style="width:100%; margin-top:8px; accent-color:var(--color-warning);">
+                <div style="display:flex; justify-content:space-between; font-size:10px; color:#64748b; margin-top:4px;">
+                  <span>50V (Normal Çalışma)</span>
+                  <span>120V (Aşırı Gerilim Tehlikesi!)</span>
+                </div>
+              </div>
+
+              <div class="stats-grid">
+                <div class="stat-box">
+                  <div class="stat-label">Toplam Direnç</div>
+                  <div class="stat-val" id="stat-resistance">5.0 Ω</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-label">Devre Akımı</div>
+                  <div class="stat-val" id="stat-current">0.0 A</div>
+                </div>
+                <div class="stat-box" id="temp-stat-box">
+                  <div class="stat-label" id="temp-stat-label">Sıcaklık</div>
+                  <div class="stat-val" id="stat-temp">20 °C</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Çıktı Görsel Bölmesi -->
+            <div class="illustration-box" id="resist-output-box">
+              <!-- Toaster Illustration -->
+              <div id="ill-toaster" style="display:flex; flex-direction:column; align-items:center; width:100%; height:100%; justify-content:center; position:relative;">
+                <div class="toaster-bread" id="toaster-bread"></div>
+                <div class="toaster-body"></div>
+                <div style="position:absolute; bottom:68px; font-size:24px; opacity:0;" id="toast-steam">♨️</div>
+              </div>
+              
+              <!-- Rocket Illustration -->
+              <div id="ill-rocket" style="display:none; flex-direction:column; align-items:center; width:100%; height:100%; justify-content:center; position:relative;">
+                <div class="rocket-sprite" id="rocket-sprite">🚀</div>
+                <div style="position:absolute; bottom:5px; font-size:20px; opacity:0;" id="rocket-smoke">💨</div>
+              </div>
+
+              <!-- Computer Monitor Illustration -->
+              <div id="ill-fuse" style="display:none; flex-direction:column; align-items:center; width:100%; height:100%; justify-content:center; position:relative;">
+                <div class="pc-screen" id="pc-screen">💻 KAPALI</div>
+                <div class="pc-base"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kontrol Butonları -->
+          <div style="display:flex; gap:15px; margin-top:5px;">
+            <button class="btn btn-warning" onclick="runResistSimulation()" style="flex:2; font-size:18px; font-weight:800; padding:12px;" id="btn-run-resist">DEVREYİ ÇALIŞTIR ⚡</button>
+            <button class="btn btn-danger" onclick="resetResistLab()" style="flex:1; font-size:16px; font-weight:800; padding:12px;">SIFIRLA</button>
+          </div>
+        </div>
+      </div>
+
+
+    <!-- 9. İLETKEN/YALITKAN ARCADE TASNİF OYUNU GÖRÜNÜMÜ -->
+    <div id="sorting-game" class="view-container">
+      <div class="view-header">
+        <div class="view-title-area">
+          <h2 id="sorting-heading" tabindex="-1">🎮 İletken/Yalıtkan Hızlı Tasnif Oyunu</h2>
+          <p>Yukarıdan düşen maddeleri klavyenizdeki ok tuşlarıyla (Sol Ok: İletken, Sağ Ok: Yalıtkan) veya sepetlere tıklayarak doğru sepetlere gönderin!</p>
+        </div>
+        <button class="btn btn-danger" onclick="showDashboard()">Kapat ✕</button>
+      </div>
+
+      <div class="lab-layout" style="grid-template-columns: 1fr 300px;">
+        <div class="dart-game-screen" style="position: relative; overflow: hidden; height: 450px; background: #0f172a; border-radius: 16px; border: 4px solid var(--border-color); width: 100%;">
+          <!-- Can ve Skor Bilgisi -->
+          <div style="position: absolute; top: 15px; left: 20px; right: 20px; display: flex; justify-content: space-between; font-family: var(--font-title); font-weight: 700; color: white; font-size: 18px; z-index: 10;">
+            <div>Puan: <span id="sort-score-val" style="color: var(--color-warning);">0</span></div>
+            <div id="sort-lives-val" style="letter-spacing: 2px;">❤️❤️❤️</div>
+          </div>
+
+          <!-- Düşen Cisim (Neobrutalist Oyun Kartı Tasarımı) -->
+          <div id="falling-item" style="position: absolute; top: -150px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; z-index: 5; background: #fffbeb; border: 4px solid var(--border-color); box-shadow: 4px 4px 0 var(--border-color); border-radius: 16px; width: 130px; height: 140px; box-sizing: border-box; padding: 10px;">
+            <span id="falling-item-icon" style="font-size: 48px; line-height: 1; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.15));">🔑</span>
+            <span id="falling-item-name" style="font-family: var(--font-title); font-weight: 800; font-size: 13px; text-align: center; color: var(--text-dark); line-height: 1.2; width: 100%; display: block; word-wrap: break-word;">Demir Anahtar</span>
+          </div>
+
+          <!-- Alt Sepetler -->
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-between; padding: 20px 40px; z-index: 10;">
+            <!-- Sol Sepet (İletken) -->
+            <div id="bin-conductor" onclick="sortFallingItem('iletken')" style="background: var(--color-success); border: 3px solid var(--border-color); color: white; padding: 15px 25px; border-radius: 16px; font-family: var(--font-title); font-weight: 700; font-size: 18px; box-shadow: 4px 4px 0 var(--border-color); text-align: center; width: 155px; cursor: pointer; transition: transform 0.1s;">
+              ⚡ İLETKEN
+              <div style="font-size: 11px; font-weight: 600; margin-top: 5px; color: #d1fae5;">◀ Sol Yön Tuşu</div>
+            </div>
+            <!-- Sağ Sepet (Yalıtkan) -->
+            <div id="bin-insulator" onclick="sortFallingItem('yalitkan')" style="background: var(--color-danger); border: 3px solid var(--border-color); color: white; padding: 15px 25px; border-radius: 16px; font-family: var(--font-title); font-weight: 700; font-size: 18px; box-shadow: 4px 4px 0 var(--border-color); text-align: center; width: 155px; cursor: pointer; transition: transform 0.1s;">
+              🛑 YALITKAN
+              <div style="font-size: 11px; font-weight: 600; margin-top: 5px; color: #fee2e2;">Sağ Yön Tuşu ▶</div>
+            </div>
+          </div>
+
+          <!-- Oyun Bitti / Başla Ekranı (Overlay) -->
+          <div id="sort-game-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; z-index: 20;">
+            <div style="font-size: 64px; animation: wobble 3s infinite;">🎮</div>
+            <h3 id="sort-overlay-title" style="color: white; font-size: 28px; font-family: var(--font-title); text-align: center;">Hızlı Tasnif Oyunu</h3>
+            <p id="sort-overlay-desc" style="color: #94a3b8; text-align: center; max-width: 380px; font-size: 14px; padding: 0 20px;">Maddeleri doğru sepetlere yönlendirin. 3 canınız var. Skor arttıkça düşme hızı da artacak!</p>
+            <button class="btn btn-warning" id="btn-start-sort" onclick="startSortingGame()" style="font-size: 18px; padding: 12px 30px;">OYUNU BAŞLAT</button>
+          </div>
+        </div>
+
+        <div class="dart-scoreboard" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3>Nasıl Oynanır?</h3>
+            <div class="info-note" style="font-size: 13px; line-height: 1.5; margin-top: 15px;">
+              Yukarıdan rastgele maddeler düşecek. Bu maddeleri:
+              <br><br>
+              <strong>Sol Yön Tuşu</strong> veya <strong>İLETKEN</strong> butonuna tıklayarak İletkenler sepetine,
+              <br>
+              <strong>Sağ Yön Tuşu</strong> veya <strong>YALITKAN</strong> butonuna tıklayarak Yalıtkanlar sepetine gönderin.
+              <br><br>
+              Hatalı sepete gönderirseniz veya madde sepetlere ulaşmadan yere düşerse 1 can kaybedersiniz!
+            </div>
+          </div>
+
+          <div style="border-top: 2px dashed var(--border-color); padding-top: 15px; margin-top: 15px;">
+            <div style="font-weight: 700; font-family: var(--font-title); font-size: 16px;">
+              🏆 En Yüksek Skor: <span id="sort-high-score-val" style="color: var(--color-warning);">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 6. MAKEY MAKEY FİZİKSEL PROJELER (PERFORMANS GÖREVLERİ) -->
+    <div id="makey-projects" class="view-container">
+      <div class="view-header">
+        <div class="view-title-area">
+          <h2 id="projects-heading" tabindex="-1">🛠️ Fiziksel Makey Makey Performans Görevleri</h2>
+          <p>Bilişim Teknolojileri ve Yazılım dersiyle işbirliği içinde sınıfta yapabileceğiniz eğlenceli uygulamalar.</p>
+        </div>
+        <button class="btn btn-danger" onclick="showDashboard()">Kapat ✕</button>
+      </div>
+
+      <div class="gorevler-grid">
+        <!-- Proje 1 -->
+        <div class="gorev-card">
+          <div class="gorev-header">
+            <span class="gorev-icon">🍌</span>
+            <div>
+              <h3>Meyve Piyanosu</h3>
+              <span class="gorev-badge">Başlangıç Seviye</span>
+            </div>
+          </div>
+          <p>Sınıftaki çeşitli iletken meyveleri (muz, elma, mandalina) Makey Makey kitine bağlayarak dokunmatik bir piyano tasarlayın.</p>
+          <ul class="gorev-steps">
+            <li>Meyvelere timsah ağızlı kabloların bir ucunu batırın.</li>
+            <li>Diğer uçları Makey Makey üzerindeki yön tuşlarına ve Space bar yuvasına bağlayın.</li>
+            <li>Metal bir kaşığa veya alüminyum folyoya kablo bağlayıp Makey Makey "Earth (Toprak)" hattına takın.</li>
+            <li>Bir elinizle toprak hattını tutarken diğer elinizle meyvelere dokunarak piyanoyu çalın!</li>
+          </ul>
+          <div class="scratch-code-box">
+            [Scratch Kodu]<br>
+            » "boşluk tuşuna basılınca"<br>
+            » "C4 piyano sesini 0.25 vuruş çal"
+          </div>
+        </div>
+
+        <!-- Proje 2 -->
+        <div class="gorev-card">
+          <div class="gorev-header">
+            <span class="gorev-icon">✏️</span>
+            <div>
+              <h3>Grafit Kalem Devresi</h3>
+              <span class="gorev-badge">Orta Seviye</span>
+            </div>
+          </div>
+          <p>Kurşun kalem ucu (grafit) iletken bir malzemedir! Kağıda çizeceğiniz kalın yollarla bilgisayardaki bir oyunu kontrol edin.</p>
+          <ul class="gorev-steps">
+            <li>Resim kağıdına kurşun kalemle çok kalın ve koyu yön okları çizin.</li>
+            <li>Çizimlerin kağıdın kenarına kadar uzanmasını sağlayın.</li>
+            <li>Kabloları bu çizimlerin üzerine metal ataşlarla tutturarak Makey ok girişlerine bağlayın.</li>
+            <li>Bilgisayarda bir labirent veya koşu oyunu açıp çizdiğiniz tuşlara basarak oynayın.</li>
+          </ul>
+          <div class="scratch-code-box">
+            [Scratch Kodu]<br>
+            » "sağ ok tuşuna basılınca"<br>
+            » "10 adım git ve sonraki kostüme geç"
+          </div>
+        </div>
+
+        <!-- Proje 3 -->
+        <div class="gorev-card">
+          <div class="gorev-header">
+            <span class="gorev-icon">🥛</span>
+            <div>
+              <h3>Su Davulu</h3>
+              <span class="gorev-badge">İleri Seviye</span>
+            </div>
+          </div>
+          <p>Tuzlu suyun iletkenliğinden yararlanarak bardaklardaki suları birer davul pad'ine dönüştürün.</p>
+          <ul class="gorev-steps">
+            <li>5 adet plastik bardağa su doldurun ve içlerine birer çay kaşığı tuz atıp karıştırın.</li>
+            <li>Kabloların bir ucunu suyun içine sarkıtın, diğer ucunu Makey kartına takın.</li>
+            <li>Toprak hattını elinizde tutarak sırayla sulara dokunun.</li>
+            <li>Farklı tuzluluk oranlarının direnci nasıl etkilediğini tartışın.</li>
+          </ul>
+          <div class="scratch-code-box">
+            [Scratch Kodu]<br>
+            » "sol ok tuşuna basılınca"<br>
+            » "Bongo Davulu sesini çal"
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 7. İNTERAKTİF VE YAZDIRILABİLİR ÇALIŞMA KAĞIDI -->
+    <div id="calisma-kagidi" class="view-container">
+      <div class="view-header">
+        <div class="view-title-area">
+          <h2 id="worksheet-heading" tabindex="-1">📝 Ünite Sonu Çalışma Kağıdı</h2>
+          <p>Aşağıdaki soruları yanıtla, anında sonuçlarını gör. Sayfayı yazdırarak sınıfta da kullanabilirsin!</p>
+        </div>
+        <div class="nav-links">
+          <button class="btn btn-success" onclick="window.print()">
+            <span class="btn-icon">🖨️</span> Çalışma Kağıdını Yazdır (A4)
+          </button>
+          <button class="btn btn-danger" onclick="showDashboard()">Kapat ✕</button>
+        </div>
+      </div>
+
+      <div class="worksheet-layout">
+        <!-- Soru 1 -->
+        <div class="worksheet-question" data-q-id="q1">
+          <h4><span class="q-badge">Soru 1</span> Bir elektrik devresinde anahtar kapalı olduğu halde ampul ışık vermiyorsa bunun nedeni hangisi olamaz?</h4>
+          <div class="options-list">
+            <div class="option-item" data-val="A" onclick="selectOption('q1', 'A')">A) Devreye bağlı iletken telin kopuk olması</div>
+            <div class="option-item" data-val="B" onclick="selectOption('q1', 'B')">B) Devredeki test uçlarına plastik cetvel bağlanması</div>
+            <div class="option-item" data-val="C" onclick="selectOption('q1', 'C')">C) Devredeki pilin bitmiş olması</div>
+            <div class="option-item" data-val="D" onclick="selectOption('q1', 'D')">D) Devreye bağlanan bakır telin çok kısa olması</div>
+          </div>
+        </div>
+
+        <!-- Soru 2 -->
+        <div class="worksheet-question" data-q-id="q2">
+          <h4><span class="q-badge">Soru 2</span> Özdeş pillerle kurulan iki devreden birincisinde 10 cm, ikincisinde ise 30 cm uzunluğunda nikel tel kullanılmıştır. Birinci devredeki ampulün daha parlak yandığı gözlemlenmiştir. Buna göre bu deneydeki bağımsız değişken nedir?</h4>
+          <div class="options-list">
+            <div class="option-item" data-val="A" onclick="selectOption('q2', 'A')">A) İletken telin uzunluğu</div>
+            <div class="option-item" data-val="B" onclick="selectOption('q2', 'B')">B) Ampulün parlaklığı</div>
+            <div class="option-item" data-val="C" onclick="selectOption('q2', 'C')">C) Pil sayısı</div>
+            <div class="option-item" data-val="D" onclick="selectOption('q2', 'D')">D) İletken telin cinsi</div>
+          </div>
+        </div>
+
+        <!-- Soru 3 -->
+        <div class="worksheet-question" data-q-id="q3">
+          <h4><span class="q-badge">Soru 3</span> Bir elektrik devresinde telin dik kesit alanı (kalınlığı) artırılırsa devredeki ampul parlaklığında ve elektriksel dirençte nasıl bir değişim gözlemlenir?</h4>
+          <div class="options-list">
+            <div class="option-item" data-val="A" onclick="selectOption('q3', 'A')">A) Direnç artar, parlaklık azalır.</div>
+            <div class="option-item" data-val="B" onclick="selectOption('q3', 'B')">B) Direnç azalır, parlaklık artar.</div>
+            <div class="option-item" data-val="C" onclick="selectOption('q3', 'C')">C) Hem direnç hem de parlaklık artar.</div>
+            <div class="option-item" data-val="D" onclick="selectOption('q3', 'D')">D) Her iki değer de değişmez.</div>
+          </div>
+        </div>
+
+        <!-- Soru 4 -->
+        <div class="worksheet-question" data-q-id="q4">
+          <h4><span class="q-badge">Soru 4</span> Makey Makey kartına bağlanan elmanın üzerine dokunulduğunda bilgisayardan ses çıkmasını sağlayan biyolojik/fiziksel temel prensip aşağıdakilerden hangisidir?</h4>
+          <div class="options-list">
+            <div class="option-item" data-val="A" onclick="selectOption('q4', 'A')">A) İnsan vücudu ve elmanın elektriği iletmesi</div>
+            <div class="option-item" data-val="B" onclick="selectOption('q4', 'B')">B) Elmanın pille elektrik üretmesi</div>
+            <div class="option-item" data-val="C" onclick="selectOption('q4', 'C')">C) Havada yüksek voltajlı akım oluşması</div>
+            <div class="option-item" data-val="D" onclick="selectOption('q4', 'D')">D) Makey Makey kartının sıcaklık farkıyla çalışması</div>
+          </div>
+        </div>
+
+        <div class="worksheet-actions">
+          <button class="btn btn-warning" onclick="resetWorksheet()">Cevapları Temizle</button>
+          <button class="btn btn-success" onclick="checkWorksheetAnswers()">Cevapları Kontrol Et</button>
+        </div>
+        
+        <div class="lab-feedback" id="worksheet-score-panel" style="display: none;">
+          <!-- Skor ve geribildirim buraya gelecek -->
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 8. ÖĞRETMEN 5E DERS PLANI -->
+    <div id="ders-plani" class="view-container">
+      <div class="view-header">
+        <div class="view-title-area">
+          <h2 id="plan-heading" tabindex="-1">🏫 Disiplinlerarası 5E Ders Planı</h2>
+          <p>Fen Bilimleri ve Bilişim Teknolojileri (BT) ortak kazanımlarına göre hazırlanmış, Türkiye Yüzyılı Maarif Modeline (TYMM) uygun 80 dakikalık (2 Ders Saati) öğretim tasarımı.</p>
+        </div>
+        <button class="btn btn-danger" onclick="showDashboard()">Kapat ✕</button>
+      </div>
+
+      <div class="lesson-tabs">
+        <div class="lesson-tab active" data-tab="engage" onclick="switchLessonTab('engage')">Girme (Engage)</div>
+        <div class="lesson-tab" data-tab="explore" onclick="switchLessonTab('explore')">Keşfetme (Explore)</div>
+        <div class="lesson-tab" data-tab="explain" onclick="switchLessonTab('explain')">Açıklama (Explain)</div>
+        <div class="lesson-tab" data-tab="elaborate" onclick="switchLessonTab('elaborate')">Derinleştirme (Elaborate)</div>
+        <div class="lesson-tab" data-tab="evaluate" onclick="switchLessonTab('evaluate')">Değerlendirme (Evaluate)</div>
+      </div>
+
+      <!-- Tab Content 1: Girme -->
+      <div id="tab-engage" class="lesson-content-pane active">
+        <div class="lesson-card">
+          <div class="lesson-step-header">
+            <span class="step-num">1</span>
+            <h3>Girme (Engage) Aşaması - Süre: 15 Dakika</h3>
+          </div>
+          <p><strong>Öğretmen Etkinliği:</strong> Derse elinde bir adet soyulmamış muz, bir adet metal kaşık ve Makey Makey kartı ile girer. Öğrencilere "Bu muzu kullanarak bilgisayarda piyano çalabileceğimi söylesem bana inanır mısınız?" sorusunu yöneltir.</p>
+          <div class="info-note">
+            💡 <strong>Dikkat Çekme Noktası:</strong> Öğretmen devreyi kurup muza dokunarak ses çıkardığında öğrencilerin merak duygusu zirveye ulaşır. "Muzdan bilgisayara elektrik nasıl gidiyor?" sorusu üzerinden iletkenlik kavramı tartışmaya açılır.
+          </div>
+          <p><strong>Öğrenci Görevi:</strong> Günlük hayatta elektrik çarpmalarından korunmak için neden kabloların dışının plastik olduğunu ve prizlerin neden mika/plastik malzemeden yapıldığını tartışırlar.</p>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: Keşfetme -->
+      <div id="tab-explore" class="lesson-content-pane">
+        <div class="lesson-card">
+          <div class="lesson-step-header">
+            <span class="step-num">2</span>
+            <h3>Keşfetme (Explore) Aşaması - Süre: 25 Dakika</h3>
+          </div>
+          <p><strong>Etkileşimli Simülasyon:</strong> Öğrenciler gruplara ayrılır. Bilgisayarlarında <strong>"İletken mi Yalıtkan mı? Test Laboratuvarı"</strong> simülasyonunu açarlar. Altın, gümüş, tahta, tuzlu su gibi farklı maddeleri test ederek hangilerinde ampulün yandığını listelerler.</p>
+          <p><strong>Fiziksel Keşif (BT İşbirliği):</strong> Sınıfta kurulan Makey Makey istasyonlarında öğrenciler kendi getirdikleri malzemeleri (elma, yaprak, anahtar, ıslak mendil) toprak hattına bağlı olarak test ederler.</p>
+          <div class="warning-note">
+            ⚠️ <strong>Önemli Gözlem:</strong> Öğrenciler saf su yerine tuzlu su kullandıklarında devredeki ampulün yandığını keşfederek sıvıların da iletken olabileceğini fark ederler.
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 3: Açıklama -->
+      <div id="tab-explain" class="lesson-content-pane">
+        <div class="lesson-card">
+          <div class="lesson-step-header">
+            <span class="step-num">3</span>
+            <h3>Açıklama (Explain) Aşaması - Süre: 15 Dakika</h3>
+          </div>
+          <p><strong>Kavramsal Tanımlama:</strong> Öğretmen rehberliğinde elektriği ileten maddelere <strong>İletken</strong>, iletmeyen maddelere ise <strong>Yalıtkan</strong> adı verildiği netleştirilir. Katı ve sıvı iletken örnekleri tahtaya yazılır.</p>
+          <p><strong>Direnç Kavramı:</strong> Maddelerin elektriğe karşı gösterdiği zorluğa <strong>Elektriksel Direnç</strong> denildiği açıklanır. Birimi Ohm (&Omega;) olan bu kavram, <strong>"Elektriksel Direnç Lab"</strong> simülasyonu üzerinden gösterilir. Öğrenciler telin kalınlığı ve boyunun direnci nasıl değiştirdiğini animasyonlarla (elektronların atomlara çarpma sıklığı) görerek kavrar.</p>
+        </div>
+      </div>
+
+      <!-- Tab Content 4: Derinleştirme -->
+      <div id="tab-elaborate" class="lesson-content-pane">
+        <div class="lesson-card">
+          <div class="lesson-step-header">
+            <span class="step-num">4</span>
+            <h3>Derinleştirme (Elaborate) Aşaması - Süre: 15 Dakika</h3>
+          </div>
+          <p><strong>Disiplinlerarası Uygulama:</strong> Öğrenciler Makey Makey performans görevlerinden <strong>"Grafit Kalem Devresi"</strong> görevini yaparlar. Kurşun kalemle çizdikleri yolların direncini ve kalınlığını ayarlayarak Scratch oyunundaki karakterleri kontrol etmeye çalışırlar.</p>
+          <div class="info-note">
+            🎨 <strong>BT İşbirliği Detayı:</strong> Bilişim öğretmeni Scratch kodlamasında "tuş algılama" olaylarını gösterirken, Fen öğretmeni çizginin kalınlığı (direncin azalması) sayesinde tetiklemenin daha kararlı çalıştığını açıklar.
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 5: Değerlendirme -->
+      <div id="tab-evaluate" class="lesson-content-pane">
+        <div class="lesson-card">
+          <div class="lesson-step-header">
+            <span class="step-num">5</span>
+            <h3>Değerlendirme (Evaluate) Aşaması - Süre: 10 Dakika</h3>
+          </div>
+          <p><strong>Ölçme ve Değerlendirme:</strong></p>
+          <ul class="gorev-steps">
+            <li>Öğrenciler portal üzerindeki <strong>"Ünite Sonu Dart Oyunu"</strong>'nu oynayarak katı/sıvı iletken ve yalıtkanları ayırt etme becerilerini test ederler.</li>
+            <li>Portalda yer alan <strong>"Çalışma Kağıdı"</strong> doldurulur ve kontrol edilir.</li>
+            <li>Öğretmenler çalışma kağıdını PDF olarak yazdırıp fiziksel sınav/ödev olarak da değerlendirebilir.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Sayfa Alt Bilgisi -->
+  <footer>
+    <p>© 2026 ElektroLab 6 - Fen Bilimleri & Bilişim Teknolojileri Disiplinlerarası Eğitim Modülü</p>
+    <p style="font-size: 11px; margin-top: 5px; color: var(--text-muted);">MEB 6. Sınıf Fen Bilimleri Müfredatı ve Türkiye Yüzyılı Maarif Modeli (TYMM) ile tam uyumludur.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
